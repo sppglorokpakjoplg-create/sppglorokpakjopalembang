@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informasi Angka Kecukupan Gizi dan Menu Hari Ini</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        fun: ['Fredoka', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            250: '#7dd3fc',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        skyBlue: {
+                            light: '#f4faff',
+                            DEFAULT: '#38bdf8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(2deg); }
+        }
+        .animate-float-slow {
+            animation: float 4s ease-in-out infinite;
+        }
+        .bubble-bg {
+            background-image: radial-gradient(#bae6fd 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="bg-skyBlue-light text-slate-800 font-sans min-h-screen flex flex-col justify-between bubble-bg selection:bg-primary-250 selection:text-primary-900">
+
+    <div class="fixed top-24 left-4 text-3xl animate-float-slow pointer-events-none opacity-50 hidden xl:block">🍎</div>
+    <div class="fixed top-48 right-6 text-3xl animate-float-slow pointer-events-none opacity-50 hidden xl:block">🥦</div>
+    <div class="fixed bottom-16 left-8 text-3xl animate-float-slow pointer-events-none opacity-50 hidden xl:block">🥛</div>
+    <div class="fixed bottom-24 right-10 text-3xl animate-float-slow pointer-events-none opacity-50 hidden xl:block">⭐</div>
+
+    <header class="bg-white/95 backdrop-blur-md border-b-2 border-sky-100 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row justify-between items-center gap-4">
+            
+            <div class="flex items-center space-x-3.5 group">
+                <div class="bg-primary-50 p-2 rounded-2xl border-2 border-primary-200 flex items-center justify-center shadow-md w-16 h-16 sm:w-20 sm:h-20 shrink-0 overflow-hidden transform group-hover:scale-105 transition-transform duration-300">
+                    <img src="https://tse1.mm.bing.net/th/id/OIP.g7mlzkHHgHvoCossMOAs9wAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" 
+                         alt="Logo SPPG" 
+                         onerror="this.src='https://placehold.co/120x120/0369a1/ffffff?text=SPPG'" 
+                         class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <h1 class="font-fun text-sm sm:text-base lg:text-xl font-bold text-primary-900 tracking-tight leading-snug">
+                        SPPG KOTA PALEMBANG ILIR BARAT SATU LOROK PAKJO
+                    </h1>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                        <span class="inline-block w-2 h-2 rounded-full bg-primary-500 animate-pulse"></span>
+                        <p class="text-xs text-primary-700 font-semibold font-fun">Portal Informasi Gizi Ceria & Menu Seimbang</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <div id="admin-status-badge" class="hidden sm:flex items-center gap-2 bg-sky-50 px-3 py-1.5 rounded-xl border border-sky-200 text-xs font-bold text-slate-700">
+                    <span id="indicator-dot" class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                    <span id="indicator-text">Mode Pengunjung</span>
+                </div>
+                <div id="admin-auth-container">
+                    <button onclick="openLoginModal()" class="bg-white hover:bg-sky-50 text-slate-600 hover:text-primary-700 text-xs font-bold font-fun px-3.5 py-2.5 rounded-2xl transition-all border-2 border-slate-200 flex items-center gap-1.5 shadow-sm">
+                        <span>🔒</span> Admin
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full space-y-10">
+        
+        <!-- Hero Intro Banner -->
+        <div class="bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-3xl p-6 sm:p-10 shadow-xl flex flex-col sm:flex-row justify-between items-center gap-6 border-4 border-white/40 relative overflow-hidden">
+            <div class="absolute -right-6 -bottom-6 text-9xl opacity-10 pointer-events-none">🍱</div>
+            <div class="space-y-3 text-center sm:text-left z-10">
+                <div class="inline-flex items-center gap-2 bg-white/20 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-sm">
+                    <span>✨</span> Menu Harian & AKG Terpadu
+                </div>
+                <h2 class="font-fun text-2xl sm:text-4xl font-extrabold tracking-wide drop-shadow-sm">Informasi Angka Kecukupan Gizi dan Menu Hari Ini</h2>
+                <p class="text-primary-50 text-sm sm:text-base max-w-3xl font-medium leading-relaxed">
+                    Menampilkan rincian foto menu baki ompreng dengan 5 makanan lezat serta tabel Angka Kecukupan Gizi lengkap (Energi, Protein, Lemak, Karbohidrat, dan Serat) untuk 4 kelompok target.
+                </p>
+            </div>
+        </div>
+
+        <div id="categories-container" class="space-y-12">
+            <!-- Dynamically injected via JavaScript -->
+        </div>
+
+    </main>
+
+    <footer class="bg-white/80 backdrop-blur-md border-t-2 border-sky-100 mt-12 py-6 text-center text-xs sm:text-sm text-slate-500 font-medium">
+        <p>SPPG KOTA PALEMBANG ILIR BARAT SATU LOROK PAKJO &copy; 2026. Portal Gizi Ceria & Sehat.</p>
+    </footer>
+
+    <div id="login-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl space-y-6 border-4 border-sky-100 transform transition-all animate-in fade-in">
+            <div class="flex justify-between items-center border-b-2 border-sky-100 pb-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🔐</span>
+                    <h3 class="font-fun text-xl font-extrabold text-slate-900">Autentikasi Admin</h3>
+                </div>
+                <button onclick="closeLoginModal()" class="text-slate-400 hover:text-slate-700 font-bold text-2xl w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">&times;</button>
+            </div>
+            <div class="space-y-4">
+                <p class="text-xs text-slate-500 font-medium leading-relaxed">Masukkan sandi administrator untuk mengaktifkan mode edit pada foto ompreng, 5 nama menu, dan tabel AKG.</p>
+                <div>
+                    <label class="block font-fun text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Sandi Rahasia</label>
+                    <input type="password" id="input-admin-password" placeholder="Masukkan sandi..." class="w-full px-4 py-3 rounded-2xl border-2 border-sky-200 focus:outline-none focus:border-primary-500 text-sm font-semibold bg-sky-50/50">
+                    <p id="login-error-msg" class="text-xs text-red-500 font-bold mt-1.5 hidden flex items-center gap-1"><span>⚠️</span> Sandi salah! Silakan coba lagi.</p>
+                </div>
+            </div>
+            <div class="flex justify-end space-x-3 pt-3 border-t-2 border-sky-100">
+                <button onclick="closeLoginModal()" class="px-4 py-2.5 text-xs font-bold font-fun text-slate-600 bg-slate-100 rounded-2xl hover:bg-slate-200 transition-all">Batal</button>
+                <button onclick="verifyAdminLogin()" class="px-5 py-2.5 text-xs font-bold font-fun text-white bg-primary-600 rounded-2xl hover:bg-primary-700 transition-all shadow-lg shadow-primary-500/30">Masuk</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="akg-edit-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl space-y-6 border-4 border-sky-100">
+            <div class="flex justify-between items-center border-b-2 border-sky-100 pb-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">✏️</span>
+                    <h3 class="font-fun text-xl font-extrabold text-slate-900">Ubah Nilai Gizi</h3>
+                </div>
+                <button onclick="closeAkgEditModal()" class="text-slate-400 hover:text-slate-700 font-bold text-2xl w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">&times;</button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label id="akg-modal-label" class="block font-fun text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Komponen Nutrisi</label>
+                    <input type="text" id="input-akg-val" class="w-full px-4 py-3 rounded-2xl border-2 border-sky-200 focus:outline-none focus:border-primary-500 text-sm font-bold bg-sky-50/50">
+                </div>
+            </div>
+            <div class="flex justify-end space-x-3 pt-3 border-t-2 border-sky-100">
+                <button onclick="closeAkgEditModal()" class="px-4 py-2.5 text-xs font-bold font-fun text-slate-600 bg-slate-100 rounded-2xl hover:bg-slate-200 transition-all">Batal</button>
+                <button onclick="saveAkgEdit()" class="px-5 py-2.5 text-xs font-bold font-fun text-white bg-primary-600 rounded-2xl hover:bg-primary-700 transition-all shadow-lg shadow-primary-500/30">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="menu-edit-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center hidden p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6 my-8 border-4 border-sky-100">
+            <div class="flex justify-between items-center border-b-2 border-sky-100 pb-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🍱</span>
+                    <h3 id="modal-edit-category-title" class="font-fun text-lg sm:text-xl font-extrabold text-slate-900">Edit Ompreng & 5 Menu</h3>
+                </div>
+                <button onclick="closeMenuEditModal()" class="text-slate-400 hover:text-slate-700 font-bold text-2xl w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">&times;</button>
+            </div>
+            
+            <div class="space-y-5 max-h-[70vh] overflow-y-auto pr-2">
+                <div class="space-y-2 bg-sky-50/70 p-4 rounded-2xl border-2 border-sky-100">
+                    <label class="block font-fun text-xs font-bold text-slate-700 uppercase tracking-wider">Foto Baki Ompreng</label>
+                    <input type="text" id="input-ompreng-img" placeholder="URL Gambar Ompreng" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-sky-200 text-xs focus:outline-none focus:border-primary-500 bg-white font-medium">
+                    <div class="mt-2">
+                        <label class="block text-xs text-slate-500 font-medium mb-1">Atau Unggah Gambar:</label>
+                        <input type="file" id="input-ompreng-file" accept="image/*" onchange="handleOmprengUpload(event)" class="w-full text-xs text-slate-500 file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-primary-100 file:text-primary-800 hover:file:bg-primary-200 cursor-pointer">
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="block font-fun text-xs font-bold text-slate-700 uppercase tracking-wider">Daftar 5 Nama Makanan</label>
+                    <div class="space-y-2.5">
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                            <span class="text-xs text-primary-700 font-bold font-fun block mb-1">Makanan 1 (Pokok):</span>
+                            <input type="text" id="menu-input-0" class="w-full px-3.5 py-2 rounded-xl border-2 border-sky-200 text-sm font-semibold focus:outline-none focus:border-primary-500 bg-white">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                            <span class="text-xs text-primary-700 font-bold font-fun block mb-1">Makanan 2 (Lauk Hewani):</span>
+                            <input type="text" id="menu-input-1" class="w-full px-3.5 py-2 rounded-xl border-2 border-sky-200 text-sm font-semibold focus:outline-none focus:border-primary-500 bg-white">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                            <span class="text-xs text-primary-700 font-bold font-fun block mb-1">Makanan 3 (Lauk Nabati):</span>
+                            <input type="text" id="menu-input-2" class="w-full px-3.5 py-2 rounded-xl border-2 border-sky-200 text-sm font-semibold focus:outline-none focus:border-primary-500 bg-white">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                            <span class="text-xs text-primary-700 font-bold font-fun block mb-1">Makanan 4 (Sayuran):</span>
+                            <input type="text" id="menu-input-3" class="w-full px-3.5 py-2 rounded-xl border-2 border-sky-200 text-sm font-semibold focus:outline-none focus:border-primary-500 bg-white">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                            <span class="text-xs text-primary-700 font-bold font-fun block mb-1">Makanan 5 (Buah / Susu):</span>
+                            <input type="text" id="menu-input-4" class="w-full px-3.5 py-2 rounded-xl border-2 border-sky-200 text-sm font-semibold focus:outline-none focus:border-primary-500 bg-white">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end space-x-3 pt-3 border-t-2 border-sky-100">
+                <button onclick="closeMenuEditModal()" class="px-4 py-2.5 text-xs font-bold font-fun text-slate-600 bg-slate-100 rounded-2xl hover:bg-slate-200 transition-all">Batal</button>
+                <button onclick="saveMenuEditModal()" class="px-5 py-2.5 text-xs font-bold font-fun text-white bg-primary-600 rounded-2xl hover:bg-primary-700 transition-all shadow-lg shadow-primary-500/30">Simpan Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Default comprehensive data for all 4 categories (Balita, TK, SMA, Bumil & Busui)
+        const defaultData = [
+            {
+                id: 'balita',
+                title: 'Kelompok Balita 👶',
+                subtitle: 'Usia Dini (1-5 Tahun)',
+                badgeColor: 'bg-amber-100 text-amber-800 border-amber-200',
+                image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80',
+                menus: [
+                    "Nasi Putih",
+                    "Ayam Lada Hitam",
+                    "Tahu Goreng",
+                    "Cah Sayuran",
+                    "Buah Pisang"
+                ],
+                akg: [
+                    { label: 'Energi', value: '390 Kkal', icon: '⚡' },
+                    { label: 'Protein', value: '11 gram', icon: '🥩' },
+                    { label: 'Lemak', value: '17 gram', icon: '🥑' },
+                    { label: 'Karbohidrat', value: '37 gram', icon: '🍚' },
+                    { label: 'Serat', value: '1 gram', icon: '🥬' }
+                ]
+            },
+            {
+                id: 'tk',
+                title: 'Kelompok Anak TK 🧒',
+                subtitle: 'Usia Prasekolah',
+                badgeColor: 'bg-sky-100 text-sky-800 border-sky-200',
+                image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80',
+                menus: [
+                    "Nasi Putih",
+                    "Ayam Lada Hitam",
+                    "Tahu Goreng",
+                    "Cah Sayuran",
+                    "Buah Pisang"
+                ],
+                akg: [
+                    { label: 'Energi', value: '462 Kkal', icon: '⚡' },
+                    { label: 'Protein', value: '13 gram', icon: '🥩' },
+                    { label: 'Lemak', value: '18 gram', icon: '🥑' },
+                    { label: 'Karbohidrat', value: '53 gram', icon: '🍚' },
+                    { label: 'Serat', value: '1 gram', icon: '🥬' }
+                ]
+            },
+            {
+                id: 'sma',
+                title: 'Kelompok Sekolah Menengah Atas 🎒',
+                subtitle: 'Usia Remaja & SMA',
+                badgeColor: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+                image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80',
+                menus: [
+                    "Nasi Putih",
+                    "Ayam Lada Hitam",
+                    "Tahu Goreng ",
+                    "Cah Sayurna",
+                    "Buah Pisang"
+                ],
+                akg: [
+                    { label: 'Energi', value: '661 Kkal', icon: '⚡' },
+                    { label: 'Protein', value: '18 gram', icon: '🥩' },
+                    { label: 'Lemak', value: '21 gram', icon: '🥑' },
+                    { label: 'Karbohidrat', value: '84 gram', icon: '🍚' },
+                    { label: 'Serat', value: '1 gram', icon: '🥬' }
+                ]
+            },
+            {
+                id: 'bumil',
+                title: 'Kelompok Bumil & Busui 🤱',
+                subtitle: 'Ibu Hamil & Ibu Menyusui',
+                badgeColor: 'bg-rose-100 text-rose-800 border-rose-200',
+                image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80',
+                menus: [
+                    "Nasi Putih",
+                    "Ayam Lada Hitam",
+                    "Tahu Goreng",
+                    "Cah Sayuran",
+                    "Buah Pisanh"
+                ],
+                akg: [
+                    { label: 'Energi', value: '697 Kkal', icon: '⚡' },
+                    { label: 'Protein', value: '18 gram', icon: '🥩' },
+                    { label: 'Lemak', value: '22 gram', icon: '🥑' },
+                    { label: 'Karbohidrat', value: '92 gram', icon: '🍚' },
+                    { label: 'Serat', value: '1 gram', icon: '🥬' }
+                ]
+            }
+        ];
+
+        // State variables
+        let appData = JSON.parse(localStorage.getItem('sppg_nutrition_data_v6')) || defaultData;
+        let isAdminLoggedIn = sessionStorage.getItem('sppg_admin_logged_in_v6') === 'true';
+
+        let editingCategoryIdx = null;
+        let editingAkgItemIdx = null;
+
+        function renderAll() {
+            updateAdminUI();
+            const container = document.getElementById('categories-container');
+            container.innerHTML = '';
+
+            appData.forEach((cat, cIdx) => {
+                const section = document.createElement('div');
+                section.className = "bg-white rounded-3xl border-4 border-sky-100 shadow-xl overflow-hidden p-6 sm:p-8 space-y-6";
+
+                // Menu items html
+                const icons = ["🍚", "🍗", "🍘", "🥣", "🥛"];
+                let menusHtml = '';
+                cat.menus.forEach((menuName, mIdx) => {
+                    menusHtml += `
+                        <div class="flex items-center space-x-3.5 p-3.5 rounded-2xl bg-sky-50/60 border-2 border-sky-100 hover:border-primary-300 transition-all shadow-sm">
+                            <div class="w-10 h-10 rounded-xl bg-white text-primary-700 font-extrabold font-fun text-sm flex items-center justify-center shrink-0 shadow-inner border border-sky-100">
+                                ${icons[mIdx] || '🍽️'}
+                            </div>
+                            <div class="flex-grow">
+                                <span class="text-xs font-bold font-fun text-primary-700 uppercase tracking-wider block">Menu 0${mIdx + 1}</span>
+                                <h4 class="text-sm font-bold text-slate-800">${menuName}</h4>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                // AKG rows html
+                let akgRowsHtml = '';
+                cat.akg.forEach((item, aIdx) => {
+                    let actionCol = isAdminLoggedIn ? `
+                        <td class="py-3 px-4 text-center">
+                            <button onclick="openAkgEditModal(${cIdx}, ${aIdx})" class="text-xs font-bold font-fun text-primary-700 hover:text-primary-900 bg-primary-50 hover:bg-primary-100 px-3.5 py-1.5 rounded-xl transition-all border border-primary-200 shadow-sm">
+                                Edit ✏️
+                            </button>
+                        </td>
+                    ` : `
+                        <td class="py-3 px-4 text-center">
+                            <span class="text-xs text-slate-400 font-medium italic">Terkunci 🔒</span>
+                        </td>
+                    `;
+
+                    akgRowsHtml += `
+                        <tr class="border-b border-sky-50 hover:bg-sky-50/50 transition-all">
+                            <td class="py-3 px-4 font-bold text-slate-700 text-sm flex items-center gap-2">
+                                <span class="text-base">${item.icon}</span> ${item.label}
+                            </td>
+                            <td class="py-3 px-4 text-right font-extrabold font-fun text-primary-600 text-sm">${item.value}</td>
+                            ${actionCol}
+                        </tr>
+                    `;
+                });
+
+                let menuEditBtnHtml = isAdminLoggedIn ? `
+                    <button onclick="openMenuEditModal(${cIdx})" class="bg-primary-600 hover:bg-primary-700 text-white text-xs font-extrabold font-fun px-4 py-2.5 rounded-2xl transition-all shadow-md flex items-center gap-1.5 border-2 border-primary-500">
+                        <span>✏️</span> Edit Foto & 5 Menu
+                    </button>
+                ` : '';
+
+                section.innerHTML = `
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b-2 border-sky-100 pb-5">
+                        <div>
+                            <span class="text-xs font-bold font-fun px-3 py-1.5 rounded-2xl border ${cat.badgeColor} shadow-sm inline-block mb-1.5">${cat.subtitle}</span>
+                            <h3 class="font-fun text-2xl sm:text-3xl font-extrabold text-slate-900">${cat.title}</h3>
+                        </div>
+                        <div>${menuEditBtnHtml}</div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                        <!-- Left: Ompreng Photo & 5 Menus -->
+                        <div class="lg:col-span-6 space-y-6">
+                            <div class="w-full aspect-[4/3] bg-white rounded-3xl shadow-lg border-4 border-primary-200 overflow-hidden relative group">
+                                <img src="${cat.image}" alt="Foto Ompreng ${cat.title}" onerror="this.src='https://placehold.co/800x600/e0effe/0369a1?text=Foto+Ompreng'" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-80"></div>
+                                <div class="absolute bottom-4 left-4 right-4 text-white">
+                                    <span class="bg-amber-400 text-slate-900 font-fun text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow">🌟 Porsi Gizi Seimbang</span>
+                                    <h4 class="font-fun text-lg font-bold mt-1 text-white drop-shadow">Ompreng ${cat.title}</h4>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <h5 class="font-fun font-bold text-slate-700 text-sm uppercase tracking-wider">5 Susunan Menu Makanan:</h5>
+                                <div class="space-y-2.5">
+                                    ${menusHtml}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right: AKG Table -->
+                        <div class="lg:col-span-6 bg-sky-50/50 p-5 rounded-3xl border-2 border-sky-100">
+                            <div class="flex justify-between items-center mb-4">
+                                <h5 class="font-fun font-extrabold text-slate-900 text-base">📊 Tabel Angka Kecukupan Gizi</h5>
+                                <span class="text-xs text-primary-700 font-bold font-fun bg-white px-3 py-1 rounded-full border border-primary-100 shadow-sm">Harian</span>
+                            </div>
+                            <div class="bg-white rounded-2xl shadow-sm overflow-hidden border border-sky-100">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="border-b-2 border-sky-100 text-xs font-bold font-fun text-slate-400 uppercase bg-sky-50/50">
+                                            <th class="py-2.5 px-4">Komponen Gizi</th>
+                                            <th class="py-2.5 px-4 text-right">Target</th>
+                                            <th class="py-2.5 px-4 text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${akgRowsHtml}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(section);
+            });
+        }
+
+        function updateAdminUI() {
+            const authContainer = document.getElementById('admin-auth-container');
+            const dot = document.getElementById('indicator-dot');
+            const text = document.getElementById('indicator-text');
+
+            if (isAdminLoggedIn) {
+                authContainer.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold font-fun text-slate-700 bg-white px-3 py-2 rounded-2xl border-2 border-slate-200 shadow-sm hidden sm:inline">Admin Aktif ✨</span>
+                        <button onclick="logoutAdmin()" class="bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold font-fun px-3.5 py-2.5 rounded-2xl transition-all border-2 border-red-200">
+                            Keluar
+                        </button>
+                    </div>
+                `;
+                dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
+                text.innerText = "Mode Administrator";
+            } else {
+                authContainer.innerHTML = `
+                    <button onclick="openLoginModal()" class="bg-white hover:bg-sky-50 text-slate-600 hover:text-primary-700 text-xs font-bold font-fun px-3.5 py-2.5 rounded-2xl transition-all border-2 border-slate-200 flex items-center gap-1.5 shadow-sm">
+                        <span>🔒</span> Admin
+                    </button>
+                `;
+                dot.className = "w-2.5 h-2.5 rounded-full bg-amber-400";
+                text.innerText = "Mode Pengunjung";
+            }
+        }
+
+        function openLoginModal() {
+            document.getElementById('input-admin-password').value = '';
+            document.getElementById('login-error-msg').classList.add('hidden');
+            document.getElementById('login-modal').classList.remove('hidden');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+
+        function verifyAdminLogin() {
+            const pass = document.getElementById('input-admin-password').value;
+            if (pass === 'admin123') {
+                isAdminLoggedIn = true;
+                sessionStorage.setItem('sppg_admin_logged_in_v6', 'true');
+                closeLoginModal();
+                renderAll();
+            } else {
+                document.getElementById('login-error-msg').classList.remove('hidden');
+            }
+        }
+
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            sessionStorage.removeItem('sppg_admin_logged_in_v6');
+            renderAll();
+        }
+
+        function openAkgEditModal(catIdx, aIdx) {
+            if (!isAdminLoggedIn) return;
+            editingCategoryIdx = catIdx;
+            editingAkgItemIdx = aIdx;
+            const item = appData[catIdx].akg[aIdx];
+            document.getElementById('akg-modal-label').innerText = `${appData[catIdx].title} - ${item.label}`;
+            document.getElementById('input-akg-val').value = item.value;
+            document.getElementById('akg-edit-modal').classList.remove('hidden');
+        }
+
+        function closeAkgEditModal() {
+            document.getElementById('akg-edit-modal').classList.add('hidden');
+            editingCategoryIdx = null;
+            editingAkgItemIdx = null;
+        }
+
+        function saveAkgEdit() {
+            if (!isAdminLoggedIn) return;
+            if (editingCategoryIdx !== null && editingAkgItemIdx !== null) {
+                const val = document.getElementById('input-akg-val').value.trim();
+                if (val) {
+                    appData[editingCategoryIdx].akg[editingAkgItemIdx].value = val;
+                    localStorage.setItem('sppg_nutrition_data_v6', JSON.stringify(appData));
+                    renderAll();
+                    closeAkgEditModal();
+                }
+            }
+        }
+
+        function openMenuEditModal(catIdx) {
+            if (!isAdminLoggedIn) return;
+            editingCategoryIdx = catIdx;
+            const cat = appData[catIdx];
+            document.getElementById('modal-edit-category-title').innerText = `Edit Ompreng & Menu ${cat.title}`;
+            document.getElementById('input-ompreng-img').value = cat.image;
+            document.getElementById('input-ompreng-file').value = '';
+            for (let i = 0; i < 5; i++) {
+                document.getElementById(`menu-input-${i}`).value = cat.menus[i] || '';
+            }
+            document.getElementById('menu-edit-modal').classList.remove('hidden');
+        }
+
+        function closeMenuEditModal() {
+            document.getElementById('menu-edit-modal').classList.add('hidden');
+            editingCategoryIdx = null;
+        }
+
+        function handleOmprengUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('input-ompreng-img').value = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveMenuEditModal() {
+            if (!isAdminLoggedIn) return;
+            if (editingCategoryIdx !== null) {
+                const cat = appData[editingCategoryIdx];
+                const newImg = document.getElementById('input-ompreng-img').value.trim();
+                if (newImg) cat.image = newImg;
+
+                for (let i = 0; i < 5; i++) {
+                    const val = document.getElementById(`menu-input-${i}`).value.trim();
+                    if (val) cat.menus[i] = val;
+                }
+
+                localStorage.setItem('sppg_nutrition_data_v6', JSON.stringify(appData));
+                renderAll();
+                closeMenuEditModal();
+            }
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            renderAll();
+        };
+    </script>
+</body>
+</html>
